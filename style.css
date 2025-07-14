@@ -1,21 +1,21 @@
 /* Menggunakan font Inter sebagai default */
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #111827; /* bg-gray-900 */
+    background-color: #F3F4F6; /* bg-gray-100 - Abu-abu muda untuk keseluruhan background */
     min-height: 100vh; /* Memastikan body mengambil tinggi penuh viewport */
 }
 /* Style untuk tab yang aktif */
 .tab-active {
-    background-color: #374151; /* bg-gray-700 */
+    background-color: #D1D5DB; /* bg-gray-300 - Abu-abu sedang untuk tab aktif */
     font-weight: 600;
-    color: #f9fafb; /* text-gray-50 */
+    color: #1F2937; /* text-gray-900 - Teks gelap untuk kontras */
 }
 
 /* Style untuk sel yang dapat diedit */
 [contenteditable="true"] {
     outline: 2px solid #3b82f6; /* blue-500 */
-    background-color: #1e3a8a; /* dark blue */
-    color: #e0e7ff; /* light blue text */
+    background-color: #BFDBFE; /* light blue background for editable cells */
+    color: #1E3A8A; /* dark blue text */
 }
 
 /* Menghilangkan panah pada input number */
@@ -37,27 +37,135 @@ input[type=number] {
 /* Style untuk sel kalender kinerja */
 .calendar-cell:focus {
     outline: 2px solid #3b82f6; /* blue-500 */
-    background-color: #1e3a8a; /* dark blue */
+    background-color: #BFDBFE; /* light blue background */
 }
 
 /* Style untuk kolom 'NO' yang dibekukan */
 .sticky-col {
     position: sticky;
     left: 0;
-    background-color: #1f2937; /* dark gray */
+    background-color: #E5E7EB; /* bg-gray-200 - Abu-abu muda untuk sticky column */
     z-index: 10; /* Pastikan di atas konten lain saat menggulir */
+    color: #1F2937; /* Teks gelap agar terlihat di latar terang */
 }
 /* Untuk thead, pastikan background sesuai */
 #manajemenThead .sticky-col,
 #masinisThead .sticky-col {
-    background-color: #374151; /* darker gray */
+    background-color: #D1D5DB; /* bg-gray-300 - Abu-abu yang lebih gelap untuk sticky header */
 }
 
 /* Styles for status cells */
-.calendar-cell.text-black { color: #f9fafb; } /* text-gray-50 */
-.calendar-cell.text-red-500 { color: #f87171; } /* red-400 */
-.calendar-cell.text-green-500 { color: #4ade80; } /* green-400 */
-.calendar-cell.text-blue-500 { color: #60a5fa; } /* blue-400 */
-.calendar-cell.text-yellow-500 { color: #facc15; } /* yellow-400 */
-.calendar-cell.text-purple-500 { color: #c084fc; } /* purple-400 */
-.calendar-cell.text-orange-500 { color: #fb923c; } /* orange-400 */
+.calendar-cell.text-black { color: #1F2937; } /* text-gray-900 */
+.calendar-cell.text-red-500 { color: #DC2626; } /* red-600 */
+.calendar-cell.text-green-500 { color: #16A34A; } /* green-600 */
+.calendar-cell.text-blue-500 { color: #2563EB; } /* blue-600 */
+.calendar-cell.text-yellow-500 { color: #CA8A04; } /* yellow-600 */
+.calendar-cell.text-purple-500 { color: #7C3AED; } /* purple-600 */
+.calendar-cell.text-orange-500 { color: #EA580C; } /* orange-600 */
+
+
+/* Styles for general table and content backgrounds */
+.bg-gray-800 {
+    background-color: #FFFFFF; /* White or very light gray for content areas */
+    color: #1F2937; /* Dark text for readability */
+}
+
+.bg-gray-700 {
+    background-color: #F3F4F6; /* Slightly darker light gray for sections/headers */
+    color: #1F2937; /* Dark text */
+}
+
+.bg-gray-600 {
+    background-color: #D1D5DB; /* Gray-300 for table headers and form elements */
+    color: #1F2937; /* Dark text */
+}
+
+.border-gray-700 {
+    border-color: #E5E7EB; /* Lighter border for light theme */
+}
+
+.text-gray-100 {
+    color: #1F2937; /* Dark text for main headings */
+}
+
+.text-gray-200 {
+    color: #374151; /* Slightly lighter dark text */
+}
+
+.text-gray-300 {
+    color: #4B5563; /* Medium dark gray text for secondary elements */
+}
+
+/* Specific table header for Sunday */
+.bg-red-800 {
+    background-color: #FEE2E2; /* Light red background for Sunday header */
+    color: #DC2626; /* Darker red text */
+}
+
+/* Adjust button colors for light theme visibility */
+.bg-yellow-500 { background-color: #FBBF24; } /* Lighter yellow */
+.hover\:bg-yellow-600:hover { background-color: #D97706; } /* Darker yellow on hover */
+
+.bg-green-500 { background-color: #34D399; } /* Lighter green */
+.hover\:bg-green-600:hover { background-color: #059669; } /* Darker green on hover */
+
+.bg-blue-500 { background-color: #60A5FA; } /* Lighter blue */
+.hover\:bg-blue-600:hover { background-color: #3B82F6; } /* Darker blue on hover */
+
+.bg-purple-600 { background-color: #A78BFA; } /* Lighter purple */
+.hover\:bg-purple-700:hover { background-color: #7C3AED; } /* Darker purple on hover */
+
+.bg-green-600 { background-color: #10B981; } /* Specific green for active edit buttons */
+.hover\:bg-green-700:hover { background-color: #047857; } /* Darker green for active edit buttons on hover */
+
+/* Modal backgrounds and borders */
+#pegawaiModal .bg-gray-800,
+#cutiFormModal .bg-gray-800,
+#calendarModal .bg-gray-800,
+#notificationModal .bg-gray-800,
+#dropboxKeyModal .bg-gray-800 {
+    background-color: #FFFFFF;
+}
+
+#pegawaiModal .border-gray-700,
+#cutiFormModal .border-gray-700,
+#calendarModal .border-gray-700,
+#notificationModal .border-gray-700,
+#dropboxKeyModal .border-gray-700 {
+    border-color: #E5E7EB;
+}
+
+#pegawaiModal .bg-gray-700,
+#cutiFormModal .bg-gray-700,
+#calendarModal .bg-gray-700,
+#notificationModal .bg-gray-700,
+#dropboxKeyModal .bg-gray-700 {
+    background-color: #F3F4F6;
+}
+
+#notificationModal .bg-red-800 { /* Keep red for alert icon */
+    background-color: #EF4444;
+    color: #FEF2F2;
+}
+
+
+/* Form input adjustments for light mode */
+.bg-gray-700.text-gray-100 { /* For inputs */
+    background-color: #F9FAFB; /* Very light background for inputs */
+    color: #1F2937; /* Dark text */
+    border-color: #D1D5DB; /* Lighter border */
+}
+
+.bg-gray-600.border-gray-500 { /* For select/number inputs in main content */
+    background-color: #F9FAFB;
+    color: #1F2937;
+    border-color: #D1D5DB;
+}
+
+.hover\:bg-gray-700:hover { /* For tab hover */
+    background-color: #E5E7EB;
+}
+
+.hover\:bg-gray-500:hover { /* For calendar nav buttons */
+    background-color: #D1D5DB;
+}
