@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const LOCAL_STORAGE_DROPBOX_TOKEN_KEY = 'pantauanKinerjaDropboxToken'; // Kunci untuk token Dropbox
 
     // PRE-CONFIGURED DROPBOX TOKEN (FOR LOCAL DEVELOPMENT/PERSONAL USE ONLY - NOT SECURE FOR PRODUCTION)
-    const PRE_CONFIGURED_DROPBOX_TOKEN = 'sl.u.AF2MQYxsUVBd7F_ZSVUwN0oOJjMvZO1Gy-EaPOgT0i3nplSj297se4LuClLdAUH8fvHghd3SMi07mRYa51GaXdqNpGkMV2shfhfY--TTNT1Omtv0W3fRYXFqqFwnkoOhzTTDte7G_pVxWetCz0nQu3h7mSnWjTc6sXzGNYXdkz64ueTAHrhoSkNgZRJsqLoEHUaT3qZ5oqnkLbu4aiM7XQ-tZ4mkyN1vYW4P_D23VzxAAN8R03ZRC1gel0ixqxH1lGkMQcLZFZMO6YZ992VYRqPIUczAtStS4QpYj6t7iOUtsFBCw-zPpzPrt9yshWKhsKO3p4oEpU26ofpMHtW2_tZ7ucITqjg-mOMTvd0CBTqJ-xe6VJ1JYgkHKvwAf9zhp3PsybXkXAAy_fQteFeBE2u01N9pfUa2HXcg3XSKeP7e3rOZVo8-Ho2u_N6XjEPeX4z_pww3i1E4VIQnbeDQ8TpHpXjJGEyLu7iSgYDUgGJ3hFJVWZLoryrzlYpgNJXJcr6Yx13iXYysPJoGUy3sEeiGSMRDfOjA6YgnCCDNEw4W6w2L9f1KI__29M_qenxjTr7bCO1lyHMr-MaDjRrp7_DnSmeTarhge206FY6C83LldKe3JRRe1Eb95Exb4l2M3TACw3bEnCbztulXFFDvMwE_xt8lM0fRdnobrwRhEqqRUcEoVTrW1SyLvoPdgCrMm1uNV8nXuwe6DxVbF8_bTIg95EjrSxJsq5fLra6rhvP0tzO-6DrcbIbP721uGh815xBuvAazYZKFTGXyDLSHgiX3Ikdg8340HquBqM_K9KQ2HgrjQM-eIybz-F8A9O1IQbjNj_8esRPiSI-jjzKDWuorFOG9SntefrLAf5L89aKKX8CT914RoaVbh11-u0qS1jFrDdHhTuabHRImtyKiYrMEnexp3zDFrntoxpCjDl4ZLjzporq_BmSP8d5ldLvXBYVWPsufyN1DLkGIaPudxXvpBBJSqlN6CX0z8cxGxUJptRLq2AecB9R0cc-To3ueSeHcJPuUsK9cdHc3ir8lKmxWJqt0oRSdlpegUXjkJv03MHhqHpESWZvrAWzUUh0GUSRhpM7gBpVdzj4xjGjkbDZlltb2I5Lax9Jm2DGKsJEnaVSytifiaXRm91Fx9uDLJ3p7kABv1uW2w7XNM4baYDkeeFmczow-ysLc7VOaouChCwn7qJqli6FuM8cQKgZnBrSwoWNEIWRIeRF8rftODVrVvOT8S87jMYdpQ1Dl_xMsSJVOzbksB-UhlsL5bbehOwlwtpeb261OkS1AYaJVz607w3tkwgSUpae5zzyxsis6ww'; // YOUR TOKEN HERE
+    const PRE_CONFIGURED_DROPBOX_TOKEN = 'sl.u.AF2MQYxsUVBd7F_ZSVUwN0oOJjMvZO1Gy-EaPOgT0i3nplSj297se4LuClLdAUH8fvHghd3SMi07mRYa51GaXdqNpGkMV2shfhfY--TTNT1Omtv0W3fRYXFqqFwnkoOhzTTDte7G_pVxWetCz0nQu3h7mSnWjTc6sXzGNYXdkz64ueTAHrhoSkNgZRJsqLoEHUaT3qZ5oqnkLbu4aiM7XQ-tZ4mkyN1vYW4P_D23VzxAAN8R03ZRC1gel0ixqxH1lGkMQcLZFZMO6YZ992VYRqPIUczAtStS4QpYj6t7iOUtsFBCw-zPpzPrt9yshWKhsKO3p4oEpU26ofpMHtW2_tZ7ucITqjg-mOMTvd0CBTqJ-xe6VJ1JYgkHKvwAf9zhp3PsybXkXAAy_fQteFeBE2u01N9pfUa2HXcg3XSKeP7e3rOZVo8-Ho2u_N6XjEPeX4z_pww3i1E4VIQnbeDQ8TpHpXjJGEyLu7iSgYDUgGJ3hFJVWZLoryrzlYpgNJXJcr6Yx13iXYysPJoGUy3sEeiGSMRDfOjA6YgnCCDNEw4W6w2L9f1KI__29M_qenxjTr7bCO1lyHMr-MaDjRrp7_DnSmeTarhge206FY6C83LldKe3JRRe1Eb95Exb4l2M3TACw3bEnCbztulXFFDvMwE_xt8lM0fRdnobrwRhEqqRUcEoVTrW1SyLvoPdgCrMm1uNV8nXuwe6DxVbF8_bTIg95EjrSxJsq5fLra6rhvP0tzO-6DrcbIbP721uGh815xBuvAazYZKFTGXyDLSHgiX3Ikdg8340HquBqM_K9KQ2HgrjQM-eIybz-F8A9O1IQbjNj_8esRPiSI-jjzKDWuorFOG9SntefrLAf5L89aKKX8CT914RoaVbh11-u0qS1jFrDdHhTuabHRImtyKiYrMEnexp3zDFrntoxpCjDl4ZLjzporq_BmSP8d5ldLvXBYVWPsufyN1DLkGIaPudxXvpBBJSqlN6CX0z8cxGxUJptRLq2AecB9R0cc-To3ueSeHcJPuUsK9cdHc3ir8lKmxWJqt0oRSdlpegUXjkJv03MHhqHpESWZvrAWzUUh0GUSRhpM7gBpVdzj4xjGjkbDZlltb2I5Lax9Jm2DGKsJEnaVSytifiaXRm91Fx9uDLJ3p7kABv1uW2w7XNM4baYDkeeFmczow-ysLc7VOaouChCwn7qJqli6FuM8cQKgZnBrSwoWNEIWRIeRF8rftODVrVvOT8S87jMYdpQ1Dl_xMsSJVOzbksB-UhlsL5bbeTowlwtpeb261OkS1AYaJVz607w3tkwgSUpae5zzyxsis6ww'; // YOUR TOKEN HERE
 
     const manajemenOrder = { 'KUPT': 1, 'WAKIL KUPT': 2, 'PENYELIA INSTRUKTUR': 3, 'PENYELIA DINASAN': 4, 'STAF ADMINISTRASI': 5 };
     const awakJabatan = ['MASINIS MADYA', 'MASINIS MUDA', 'MASINIS PERTAMA', 'CALON MASINIS'];
@@ -122,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeDropboxKeyModalBtn = document.getElementById('closeDropboxKeyModalBtn');
     const saveDropboxKeyBtn = document.getElementById('saveDropboxKeyBtn');
     const dropboxAccessTokenInput = document.getElementById('dropboxAccessTokenInput');
+    const syncDropboxTooltip = document.getElementById('syncDropboxTooltip');
 
 
     // --- DATA SUMBER TAHUN ---
@@ -1004,13 +1005,6 @@ document.addEventListener('DOMContentLoaded', () => {
         showPegawaiDataBtn.disabled = false; // Enable person icon button
         showPegawaiDataBtn.classList.remove('opacity-50', 'cursor-not-allowed'); 
 
-        // Disable editing of Nama, NIPP, Jabatan cells and hide delete column
-        document.querySelectorAll('.editable').forEach(cell => cell.setAttribute('contenteditable', 'false'));
-        document.querySelectorAll('.delete-col').forEach(col => col.classList.add('hidden'));
-
-        // Allow editing of calendar cells
-        document.querySelectorAll('.calendar-cell').forEach(cell => cell.setAttribute('tabindex', '0'));
-        
         // Re-render table to apply contenteditable changes
         handleKinerjaDateChange();
     };
@@ -1024,9 +1018,6 @@ document.addEventListener('DOMContentLoaded', () => {
         showPegawaiDataContainer.classList.add('hidden'); 
         showPegawaiDataBtn.disabled = true; 
         showPegawaiDataBtn.classList.add('opacity-50', 'cursor-not-allowed'); 
-
-        // Disable editing of calendar cells
-        document.querySelectorAll('.calendar-cell').forEach(cell => cell.removeAttribute('tabindex'));
 
         // Re-render table to reflect non-editable state
         handleKinerjaDateChange();
@@ -1047,13 +1038,6 @@ document.addEventListener('DOMContentLoaded', () => {
         mainEditBtn.disabled = true; // Lock pencil icon
         mainEditBtn.classList.add('opacity-50', 'cursor-not-allowed'); 
 
-        // Enable editing of Nama, NIPP, Jabatan cells and show delete column
-        document.querySelectorAll('.editable').forEach(cell => cell.setAttribute('contenteditable', 'true'));
-        document.querySelectorAll('.delete-col').forEach(col => col.classList.remove('hidden'));
-
-        // Disable editing of calendar cells
-        document.querySelectorAll('.calendar-cell').forEach(cell => cell.removeAttribute('tabindex'));
-
         // Re-render table to apply contenteditable changes
         handleKinerjaDateChange();
     };
@@ -1065,13 +1049,6 @@ document.addEventListener('DOMContentLoaded', () => {
         showPegawaiDataTooltip.textContent = 'Lihat Data Pegawai';
         mainEditBtn.disabled = false; // Unlock pencil icon
         mainEditBtn.classList.remove('opacity-50', 'cursor-not-allowed'); 
-
-        // Disable editing of Nama, NIPP, Jabatan cells and hide delete column
-        document.querySelectorAll('.editable').forEach(cell => cell.setAttribute('contenteditable', 'false'));
-        document.querySelectorAll('.delete-col').forEach(col => col.classList.add('hidden'));
-        
-        // Save changes from editable cells (Nama, NIPP, Jabatan)
-        // These changes are already saved to allEmployeesMasterList via pegawaiForm.submit
         
         // Re-render tables to reflect non-editable state and updated data
         handleKinerjaDateChange();
@@ -1125,12 +1102,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 for (let day = 1; day <= daysInMonth; day++) {
                     const status = pegawai.kinerja ? (pegawai.kinerja[day] || '') : '';
                     const statusInfo = statusMap[status] || { text: '', class: '' };
-                    const tabindex = isKinerjaEditMode ? 'tabindex="0"' : ''; // Only tabindex if in Kinerja edit mode
-                    calendarCells += `<td class="p-2 h-10 border-l border-gray-700 text-center calendar-cell ${statusInfo.class}" ${tabindex} data-day="${day}" data-pegawai-id="${pegawai.id}">${statusInfo.text}</td>`; // Updated border color
+                    const tabindex = isKinerjaEditMode ? 'tabindex="0"' : ''; 
+                    const contenteditable = isKinerjaEditMode ? 'true' : 'false';
+                    calendarCells += `<td class="p-2 h-10 border-l border-gray-700 text-center calendar-cell ${statusInfo.class}" ${tabindex} contenteditable="${contenteditable}" data-day="${day}" data-pegawai-id="${pegawai.id}">${statusInfo.text}</td>`;
                 }
             }
             const newRow = document.createElement('tr');
-            newRow.className = 'border-b border-gray-700'; // Updated border color
+            newRow.className = 'border-b border-gray-700';
             newRow.dataset.id = pegawai.id;
             newRow.innerHTML = `
                 <td class="p-3 text-center sticky-col">${index + 1}</td>
