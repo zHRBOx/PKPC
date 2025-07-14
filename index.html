@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantauan Kinerja UPT Crew KA</title>
+    <!-- Memuat Dropbox SDK -->
+    <script src="https://unpkg.com/dropbox/dist/Dropbox-sdk.min.js"></script>
+    <!-- Memuat Tailwind CSS dari CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Memuat file CSS kustom -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-900 transition-colors duration-300">
+
+    <!-- Kontainer Utama Aplikasi -->
+    <div class="w-full px-4 py-8">
+        
+        <!-- Bilah Navigasi Tab -->
+        <nav class="bg-gray-800 shadow-lg rounded-lg p-2 mb-8">
+            <!-- Header dan Judul Utama -->
+            <div class="text-center mb-8">
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-100">
+                    PANTAUAN KINERJA
+                </h1>
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-100">
+                    UPT CREW KA KELAS C PURWAKARTA
+                </h1>
+            </div>
+            
+            <!-- Kontainer untuk Tab dan Tombol Aksi -->
+            <div class="flex items-center justify-between flex-wrap gap-2">
+                <!-- Pilihan Tab: Pantauan Kinerja dan Pantauan Cuti -->
+                <div class="flex items-center justify-start flex-wrap gap-2">
+                    <a href="#" id="pantauanTab" class="flex items-center px-4 py-2 text-gray-100 font-medium rounded-lg hover:bg-gray-700 transition-colors duration-300 tab-active">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        PANTAUAN KINERJA
+                    </a>
+                    <a href="#" id="formTab" class="flex items-center px-4 py-2 text-gray-300 font-medium rounded-lg hover:bg-gray-700 transition-colors duration-300">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        PANTAUAN CUTI
+                    </a>
+                </div>
+
+                <!-- Tombol Sinkronisasi dengan Ikon Parabola -->
+                <div class="relative group">
+                    <button id="syncBtn" class="bg-gray-600 hover:bg-gray-500 text-white font-bold p-2 rounded-full transition-all duration-300">
+                        <svg id="syncIcon" class="w-5 h-5" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                           <path d="M18.364 19.364a9 9 0 1 0 -12.728 0"></path>
+                           <path d="M15.536 16.536a5 5 0 1 0 -7.072 0"></path>
+                           <path d="M12 13m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                        </svg>
+                    </button>
+                    <div id="syncTooltip" class="absolute bottom-full right-0 mb-2 w-max px-2 py-1 bg-gray-900 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                        Sinkronisasi
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Konten Tab yang Dapat Diganti -->
+        <div id="tabContent">
+            <!-- Konten untuk Tab Pantauan Cuti (tersembunyi secara default) -->
+            <main id="formContent" class="bg-gray-800 text-gray-100 rounded-lg shadow-lg p-6 hidden w-full">
+                <!-- Kartu: Daftar Cuti Bulan Ini -->
+                <div class="bg-gray-700 rounded-lg shadow-md p-6 mb-8 w-full">
+                    <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
+                        <h2 class="text-xl font-bold text-gray-100">Daftar Cuti Bulan Ini</h2>
+                    </div>
+                    <div class="flex justify-between items-center mb-6 flex-wrap gap-2">
+                        <!-- Pilihan Bulan dan Tahun untuk Cuti -->
+                        <div class="flex items-center gap-2">
+                            <select id="cutiBulan" class="bg-gray-600 border border-gray-500 rounded-md px-3 py-1.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="0">Januari</option><option value="1">Februari</option><option value="2">Maret</option><option value="3">April</option><option value="4">Mei</option><option value="5">Juni</option><option value="6">Juli</option><option value="7">Agustus</option><option value="8">September</option><option value="9">Oktober</option><option value="10">November</option><option value="11">Desember</option>
+                            </select>
+                            <div class="relative">
+                                <input type="number" id="cutiTahun" class="bg-gray-600 border border-gray-500 rounded-md px-3 py-1.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 w-24" placeholder="Tahun" autocomplete="off">
+                                <div id="cutiTahunSuggestions" class="absolute top-full left-0 mt-1 bg-gray-800 text-white rounded-md shadow-lg z-10 hidden">
+                                     <!-- Rekomendasi tahun akan muncul di sini -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tombol Aksi Cuti: Edit dan Formulir -->
+                        <div class="flex items-center gap-2">
+                            <div class="relative group">
+                                <button id="cutiEditBtn" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold p-2 rounded-full transition-all duration-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z"></path></svg>
+                                </button>
+                                <div id="cutiEditTooltip" class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                    Edit Data Cuti
+                                </div>
+                            </div>
+                            <div class="relative group">
+                                <button id="formCutiBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold p-2 rounded-full transition-all duration-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                </button>
+                                <div id="formCutiTooltip" class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                    Formulir Cuti
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-gray-600 text-gray-200">
+                                <tr>
+                                    <th class="p-3 font-semibold text-center">TANGGAL</th>
+                                    <th class="p-3 font-semibold">NAMA</th>
+                                    <th class="p-3 font-semibold text-center">NIPP</th>
+                                    <th class="p-3 font-semibold text-center">JENIS</th>
+                                    <th class="p-3 w-16 text-center font-semibold cuti-delete-col hidden">AKSI</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cutiTbody" class="bg-gray-800 divide-y divide-gray-700"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Kartu: Rekapitulasi Cuti Tahunan -->
+                <div class="bg-gray-700 rounded-lg shadow-md p-6 mb-8 w-full">
+                    <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
+                        <h2 class="text-xl font-bold text-gray-100">Rekapitulasi Cuti Tahunan</h2>
+                    </div>
+                    <div class="flex justify-between items-center mb-6 flex-wrap gap-2">
+                        <!-- Pilihan Bulan dan Tahun untuk Rekapitulasi Cuti -->
+                        <div class="flex items-center gap-2">
+                            <select id="rekapBulan" class="bg-gray-600 border border-gray-500 rounded-md px-3 py-1.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="0">Januari</option><option value="1">Februari</option><option value="2">Maret</option><option value="3">April</option><option value="4">Mei</option><option value="5">Juni</option><option value="6">Juli</option><option value="7">Agustus</option><option value="8">September</option><option value="9">Oktober</option><option value="10">November</option><option value="11">Desember</option>
+                            </select>
+                            <div class="relative">
+                                <input type="number" id="rekapTahun" class="bg-gray-600 border border-gray-500 rounded-md px-3 py-1.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 w-24" placeholder="Tahun" autocomplete="off">
+                                <div id="rekapTahunSuggestions" class="absolute top-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                     <!-- Rekomendasi tahun akan muncul di sini -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tombol Aksi Rekapitulasi Cuti: Edit -->
+                        <div class="flex items-center gap-2">
+                            <div class="relative group">
+                                <button id="rekapEditBtn" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold p-2 rounded-full transition-all duration-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z"></path></svg>
+                                </button>
+                                <div id="rekapEditTooltip" class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                    Edit Data Rekap Cuti
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tabel Data Cuti Tahunan Manajemen -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold mb-4 text-gray-100">DATA CUTI MANAJEMEN</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-max text-sm text-left">
+                                <thead class="bg-gray-600 text-gray-200">
+                                    <tr>
+                                        <th class="p-3 font-semibold text-center">NO</th>
+                                        <th class="p-3 font-semibold">NAMA</th>
+                                        <th class="p-3 font-semibold text-center">NIPP</th>
+                                        <th class="p-3 font-semibold text-center">JABATAN</th>
+                                        <th class="p-3 font-semibold text-center">TOTAL CUTI TAHUNAN</th>
+                                        <th class="p-3 font-semibold text-center">DIAMBIL</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cutiManajemenTbody" class="bg-gray-800 divide-y divide-gray-700"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tabel Data Cuti Tahunan Awak Sarana Perkeretaapian -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4 text-gray-100">DATA CUTI AWAK SARANA PERKERETAAPIAN</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-max text-sm text-left">
+                                <thead class="bg-gray-600 text-gray-200">
+                                    <tr>
+                                        <th class="p-3 font-semibold text-center">NO</th>
+                                        <th class="p-3 font-semibold">NAMA</th>
+                                        <th class="p-3 font-semibold text-center">NIPP</th>
+                                        <th class="p-3 font-semibold text-center">JABATAN</th>
+                                        <th class="p-3 font-semibold text-center">TOTAL CUTI TAHUNAN</th>
+                                        <th class="p-3 font-semibold text-center">DIAMBIL</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cutiAwakTbody" class="bg-gray-800 divide-y divide-gray-700"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Konten untuk Tab Pantauan Kinerja (terlihat secara default) -->
+            <main id="pantauanContent" class="bg-gray-800 text-gray-100 rounded-lg shadow-lg p-6 w-full">
+                <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
+                    <h2 class="text-xl font-bold text-gray-100">Data Kinerja Pegawai</h2>
+                </div>
+                <div class="flex justify-between items-center mb-6 flex-wrap gap-2">
+                    <!-- Pilihan Bulan dan Tahun untuk Kinerja -->
+                    <div class="flex items-center gap-2">
+                        <select id="kinerjaBulan" class="bg-gray-600 border border-gray-500 rounded-md px-3 py-1.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="0">Januari</option><option value="1">Februari</option><option value="2">Maret</option><option value="3">April</option><option value="4">Mei</option><option value="5">Juni</option><option value="6">Juli</option><option value="7">Agustus</option><option value="8">September</option><option value="9">Oktober</option><option value="10">November</option><option value="11">Desember</option>
+                        </select>
+                        <div class="relative">
+                            <input type="number" id="kinerjaTahun" class="bg-gray-600 border border-gray-500 rounded-md px-3 py-1.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 w-24" placeholder="Tahun" autocomplete="off">
+                            <div id="tahunSuggestions" class="absolute top-full left-0 mt-1 bg-gray-800 text-white rounded-md shadow-lg z-10 hidden">
+                                <!-- Rekomendasi tahun akan muncul di sini -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tombol Aksi Kinerja: Tambah Pegawai, Lihat Data Pegawai, Edit Kinerja -->
+                    <div class="flex items-center gap-2">
+                        <div id="addPegawaiContainer" class="relative group hidden">
+                            <button id="addPegawaiBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold p-2 rounded-full transition-all duration-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            </button>
+                            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                Tambah Pegawai
+                            </div>
+                        </div>
+                        <div id="showPegawaiDataContainer" class="relative group hidden">
+                            <button id="showPegawaiDataBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold p-2 rounded-full transition-all duration-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                            </button>
+                            <div id="showPegawaiDataTooltip" class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                Lihat Data Pegawai
+                            </div>
+                        </div>
+                        <div class="relative group">
+                            <button id="mainEditBtn" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold p-2 rounded-full transition-all duration-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z"></path></svg>
+                            </button>
+                            <div id="mainEditTooltip" class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                Edit Kinerja
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabel Manajemen -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-100">MANAJEMEN</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-max text-sm text-left">
+                            <thead id="manajemenThead" class="bg-gray-600 text-gray-200">
+                                <!-- Header kalender akan dibuat oleh JavaScript -->
+                            </thead>
+                            <tbody id="manajemenTbody" class="bg-gray-800 divide-y divide-gray-700"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tabel Awak Sarana Perkeretaapian -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-gray-100">AWAK SARANA PERKERETAAPIAN</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-max text-sm text-left">
+                            <thead id="masinisThead" class="bg-gray-600 text-gray-200">
+                                 <!-- Header kalender akan dibuat oleh JavaScript -->
+                            </thead>
+                            <tbody id="masinisTbody" class="bg-gray-800 divide-y divide-gray-700"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal/Popup untuk Input Data Pegawai -->
+    <div id="pegawaiModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-40">
+        <div class="bg-gray-800 rounded-lg shadow-xl w-full max-w-md text-gray-100">
+            <div class="border-b px-6 py-4 border-gray-700"><h3 id="pegawaiModalTitle" class="text-lg font-semibold text-gray-100">Tambah Pegawai Baru</h3></div>
+            <div class="p-6">
+                <form id="pegawaiForm">
+                    <div class="mb-4"><label for="nama" class="block text-sm font-medium text-gray-300 mb-1">Nama</label><input type="text" id="nama" name="nama" class="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-gray-100" required></div>
+                    <div class="mb-4"><label for="nipp" class="block text-sm font-medium text-gray-300 mb-1">NIPP</label><input type="text" id="nipp" name="nipp" class="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-gray-100" required></div>
+                    <div class="mb-4 relative"><label for="jabatan" class="block text-sm font-medium text-gray-300 mb-1">Jabatan</label><input type="text" id="jabatan" name="jabatan" class="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-gray-100" required autocomplete="off"><div id="jabatanSuggestions" class="absolute top-full left-0 mt-1 bg-gray-800 text-white rounded-md shadow-lg z-20 hidden w-full"></div></div>
+                    <div class="mb-4"><label for="totalCutiTahunan" class="block text-sm font-medium text-gray-300 mb-1">Total Cuti Tahunan</label><input type="number" id="totalCutiTahunan" name="totalCutiTahunan" class="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-gray-100" required></div>
+                </form>
+            </div>
+            <div class="bg-gray-700 px-6 py-4 flex justify-end gap-3 rounded-b-lg">
+                <button id="closeModalBtn" type="button" class="px-4 py-2 bg-gray-600 text-gray-200 rounded-md hover:bg-gray-500">Batal</button>
+                <button type="submit" form="pegawaiForm" id="pegawaiModalSubmitBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Tambah Pegawai</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal/Popup untuk Formulir Cuti -->
+    <div id="cutiFormModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-40">
+        <div class="bg-gray-800 rounded-lg shadow-xl w-full max-w-md text-gray-100">
+            <div class="border-b px-6 py-4 border-gray-700"><h3 class="text-lg font-semibold text-gray-100">FORMULIR PENGAJUAN CUTI</h3></div>
+            <div class="p-6">
+                <form id="cutiForm">
+                    <!-- Bagian NIPP -->
+                    <div class="mb-4">
+                        <label for="cutiNipp" class="block text-sm font-medium text-gray-300 mb-1">NIPP</label>
+                        <input type="text" id="cutiNipp" name="cutiNipp" class="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-gray-100" required>
+                        <p id="nippError" class="text-red-500 text-xs mt-1 hidden">NIPP tidak ditemukan.</p>
+                    </div>
+
+                    <!-- Wrapper untuk field lainnya, awalnya disembunyikan -->
+                    <div id="cutiDetailsWrapper" class="hidden">
+                        <div class="mb-4">
+                            <label for="cutiNama" class="block text-sm font-medium text-gray-300 mb-1">Nama</label>
+                            <input type="text" id="cutiNama" name="cutiNama" class="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-gray-100" readonly>
+                        </div>
+                        <div class="mb-4">
+                            <label for="cutiJabatan" class="block text-sm font-medium text-gray-300 mb-1">Jabatan</label>
+                            <input type="text" id="cutiJabatan" name="cutiJabatan" class="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-gray-100" readonly>
+                        </div>
+                        <div class="mb-4">
+                            <label for="cutiJenis" class="block text-sm font-medium text-gray-300 mb-1">Jenis Cuti</label>
+                            <select id="cutiJenis" name="cutiJenis" class="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-700 text-gray-100" required>
+                                <option value="" disabled selected>Pilih Jenis Cuti</option>
+                                <option value="CT">Cuti Tahunan (CT)</option>
+                                <option value="CP">Cuti Penting (CP)</option>
+                                <option value="CSK">Cuti Sakit (CSK)</option>
+                                <option value="CK">Cuti Keagamaan (CK)</option>
+                                <option value="CB">Cuti Besar (CB)</option>
+                            </select>
+                        </div>
+                        <!-- Wrapper untuk tanggal, awalnya disembunyikan -->
+                        <div id="cutiTanggalWrapper" class="mb-4 hidden">
+                            <label for="cutiTanggalDisplay" class="block text-sm font-medium text-gray-300 mb-1">Tanggal Cuti</label>
+                            <div class="flex items-center">
+                                <!-- Ikon Kalender dipindahkan ke kiri -->
+                                <button type="button" id="openCalendarBtn" class="mr-2 p-2 bg-gray-600 rounded-md hover:bg-gray-500">
+                                    <svg class="w-5 h-5 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                </button>
+                                <input type="text" id="cutiTanggalDisplay" name="cutiTanggalDisplay" class="w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-gray-100" readonly placeholder="Pilih tanggal dari kalender">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="bg-gray-700 px-6 py-4 flex justify-end gap-3 rounded-b-lg">
+                <button id="closeCutiModalBtn" type="button" class="px-4 py-2 bg-gray-600 text-gray-200 rounded-md hover:bg-gray-500">Batal</button>
+                <!-- Wrapper untuk tombol Ajukan Cuti, awalnya disembunyikan -->
+                <div id="cutiSubmitWrapper" class="hidden">
+                    <button type="submit" form="cutiForm" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Ajukan Cuti</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal/Popup untuk Kalender -->
+    <div id="calendarModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-40">
+        <div class="bg-gray-800 rounded-lg shadow-xl w-full max-w-sm text-gray-100">
+            <div class="border-b px-4 py-4 border-gray-700">
+                <div class="flex justify-between items-center">
+                    <button id="prevMonthBtn" class="p-1 rounded-full hover:bg-gray-700 text-gray-200">&lt;</button>
+                    <h3 id="monthYearHeader" class="text-lg font-semibold text-gray-100"></h3>
+                    <button id="nextMonthBtn" class="p-1 rounded-full hover:bg-gray-700 text-gray-200">&gt;</button>
+                </div>
+            </div>
+            <div class="p-4">
+                <div class="grid grid-cols-7 gap-2 text-center text-sm text-gray-400 mb-2">
+                    <div>M</div><div>S</div><div>S</div><div>R</div><div>K</div><div>J</div><div>S</div>
+                </div>
+                <div id="calendarGrid" class="grid grid-cols-7 gap-2">
+                    <!-- Tanggal akan di-generate oleh JavaScript -->
+                </div>
+            </div>
+            <div class="bg-gray-700 px-6 py-4 flex justify-end gap-3 rounded-b-lg">
+                <button id="closeCalendarBtn" type="button" class="px-4 py-2 bg-gray-600 text-gray-200 rounded-md hover:bg-gray-500">Batal</button>
+                <button id="selectDatesBtn" type="button" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Pilih Tanggal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal/Popup untuk Notifikasi -->
+    <div id="notificationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-gray-800 rounded-lg shadow-xl w-full max-w-sm text-gray-100">
+            <div class="p-6 text-center">
+                <div id="notificationIcon" class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-800 mb-4">
+                     <svg class="h-6 w-6 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 id="notificationTitle" class="text-lg font-medium text-gray-100 mb-2">Informasi</h3>
+                <p id="notificationMessage" class="text-sm text-gray-300"></p>
+            </div>
+            <div class="bg-gray-700 px-6 py-3 flex justify-center rounded-b-lg">
+                <button id="closeNotificationModalBtn" type="button" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Memuat file JavaScript kustom -->
+    <script src="script.js" defer></script>
+</body>
+</html>
